@@ -1,0 +1,226 @@
+/* ============================================
+   HTML 实时预览与组件定位工具 - Webview 样式
+   ============================================ */
+
+:root {
+  --bg-dark: #1e1e2e;
+  --bg-panel: #282a36;
+  --text-main: #f8f8f2;
+  --text-muted: #6272a4;
+  --accent: #bd93f9;
+  --highlight: #44475a;
+  --border: #44475a;
+  --font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+body.light-theme {
+  --bg-dark: #f0f2f5;
+  --bg-panel: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #94a3b8;
+  --accent: #6366f1;
+  --highlight: #e2e8f0;
+  --border: #cbd5e1;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-main);
+}
+
+body { display: flex; flex-direction: column; }
+
+/* ============================================
+   顶部进度条
+   ============================================ */
+.progress-bar {
+  width: 100%;
+  height: 3px;
+  background: var(--highlight);
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #bd93f9, #50fa7b);
+  transition: width 0.1s linear;
+}
+
+/* ============================================
+   工具栏
+   ============================================ */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  min-height: 40px;
+  flex-shrink: 0;
+  gap: 10px;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.toolbar-left,
+.toolbar-right { display: flex; align-items: center; gap: 6px; }
+
+/* ============================================
+   图标按钮（主题、刷新共用）
+   ============================================ */
+.icon-btn {
+  height: 28px;
+  width: 28px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.icon-btn:hover { color: var(--text-main); background: var(--highlight); }
+
+.icon-btn:active { transform: scale(0.92); }
+
+.icon-btn .icon { width: 16px; height: 16px; }
+
+/* ============================================
+   模式切换按钮组
+   ============================================ */
+.mode-group {
+  display: flex;
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.mode-btn {
+  padding: 0 14px;
+  height: 28px;
+  text-align: center;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.mode-btn + .mode-btn { border-left: 1px solid var(--border); }
+
+.mode-btn:hover { color: var(--text-main); background: var(--highlight); }
+
+.mode-btn.active { background: var(--accent); color: #fff; font-weight: 600; }
+
+/* ============================================
+   状态信息
+   ============================================ */
+.status-text {
+  color: var(--text-muted);
+  font-size: 11px;
+  white-space: nowrap;
+  user-select: none;
+  font-family: var(--font-mono);
+  min-width: 80px;
+  text-align: right;
+}
+
+/* ============================================
+   内容区 / 预览 / 加载
+   ============================================ */
+.content-wrapper { flex: 1; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+
+.preview-container { flex: 1; position: relative; overflow: hidden; }
+.preview-container::before { content: ''; position: absolute; inset: 0; background: #fff; z-index: 0; }
+body.light-theme .preview-container::before { background: #f0f2f5; }
+.preview-container iframe { position: relative; z-index: 1; }
+
+iframe { width: 100%; height: 100%; border: none; display: block; }
+iframe.locate-mode { cursor: crosshair; }
+
+.loading-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--bg-panel);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: opacity 0.3s;
+}
+.loading-overlay.hidden { opacity: 0; pointer-events: none; }
+
+.spinner {
+  width: 28px; height: 28px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 10px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-text { color: var(--text-muted); font-size: 12px; }
+
+/* ============================================
+   定位模式提示
+   ============================================ */
+.locate-hint {
+  position: absolute;
+  bottom: 12px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  padding: 5px 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+}
+.locate-hint.hidden { display: none; }
+
+/* ============================================
+   悬停提示
+   ============================================ */
+#element-tooltip {
+  position: fixed;
+  z-index: 10001;
+  pointer-events: none;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 3px 8px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.12s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+#element-tooltip.visible { opacity: 1; }
+
+/* ============================================
+   滚动条
+   ============================================ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-panel); }
+::-webkit-scrollbar-thumb { background: var(--border); }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }

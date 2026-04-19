@@ -1,0 +1,92 @@
+{
+  "name": "html-live-preview",
+  "displayName": "HTML 实时预览与组件定位工具",
+  "description": "实时预览 HTML 并支持点击元素跳转到源代码位置",
+  "version": "1.1.0",
+  "publisher": "html-preview",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Visualization",
+    "Debuggers",
+    "Web Development"
+  ],
+  "keywords": [
+    "html",
+    "preview",
+    "live",
+    "locator",
+    "browser",
+    "inspector",
+    "实时预览",
+    "定位"
+  ],
+  "activationEvents": [
+    "onLanguage:html"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "htmlLivePreview.openPreview",
+        "title": "打开 HTML 实时预览",
+        "icon": "$(open-preview)",
+        "category": "HTML 预览"
+      },
+      {
+        "command": "htmlLivePreview.toggleMode",
+        "title": "切换浏览/定位模式",
+        "icon": "$(inspect)",
+        "category": "HTML 预览"
+      },
+      {
+        "command": "htmlLivePreview.refreshPreview",
+        "title": "刷新预览",
+        "icon": "$(refresh)",
+        "category": "HTML 预览"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "htmlLivePreview.openPreview",
+          "when": "resourceLangId == html",
+          "group": "navigation@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "htmlLivePreview.openPreview",
+          "when": "resourceLangId == html"
+        },
+        {
+          "command": "htmlLivePreview.toggleMode",
+          "when": "htmlLivePreview.active"
+        },
+        {
+          "command": "htmlLivePreview.refreshPreview",
+          "when": "htmlLivePreview.active"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "htmlLivePreview.toggleMode",
+        "key": "ctrl+shift+i",
+        "mac": "cmd+shift+i",
+        "when": "htmlLivePreview.active"
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "build": "npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.74.0",
+    "typescript": "^5.0.0"
+  }
+}
